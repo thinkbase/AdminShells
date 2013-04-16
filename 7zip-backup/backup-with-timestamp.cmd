@@ -40,9 +40,3 @@ popd
 ENDLOCAL
 
 exit /b 0
-:: Example for usage:
-set BAK_SOURCE_DIR=E:\Workspace\ffmpeg
-set BAK_TARGET_DIR=E:\usr\local
-set BAK_PREFIX=demo
-set BAK_WILDCARD=*e*
-backup-with-timestamp.cmd
