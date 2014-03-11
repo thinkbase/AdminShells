@@ -13,7 +13,9 @@ set TIME_STAMP=%date% %time%
 
 :: Call configuration
 call %_PWD%\etc\config.bat
-call %USERPROFILE%\@batch-shell-config.bat
+if exist "%USERPROFILE%\@batch-shell-config.bat" (
+    call "%USERPROFILE%\@batch-shell-config.bat"
+)
 echo BATCH_SHELL_LOG_DIR=[%BATCH_SHELL_LOG_DIR%], BATCH_SHELL_LOG_DATE=[%BATCH_SHELL_LOG_DATE%], BATCH_SHELL_LOG_TIME=[%BATCH_SHELL_LOG_TIME%]
 IF [] equ [%BATCH_SHELL_LOG_DATE%] (
      echo Environment variable BATCH_SHELL_LOG_DATE not found, maybe %USERPROFILE%\@batch-shell-config.bat error
