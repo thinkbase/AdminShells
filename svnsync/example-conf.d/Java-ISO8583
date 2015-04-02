@@ -1,0 +1,6 @@
+_REPO_DIR="Java-ISO8583"
+_SVN_URL="http://svn.code.sf.net/p/j8583/code/"
+set +x  #Prevent showing username and password
+_SVN_SYNC_U=anonymous
+_SVN_SYNC_P=
+
