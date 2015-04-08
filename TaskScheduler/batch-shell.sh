@@ -61,7 +61,7 @@ echo "*                                                                         
 echo "********************************************************************************" >> "$LOG_FILE"
 echo -e "\n" >> "$LOG_FILE"
 
-bash -c "$CMD_LINE >> \"$LOG_FILE\" 2>&1"
+bash -c "$CMD_LINE" >> "$LOG_FILE" 2>&1
 set +x
 
 echo -e "\n" >> "$LOG_FILE"
