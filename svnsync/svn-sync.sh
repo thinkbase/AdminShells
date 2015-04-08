@@ -20,32 +20,32 @@ EOF
 chmod +x "$1/hooks/pre-revprop-change"
 }
 
-# Define SITE_BASE
+# Define SVN_SYNC_BASE
 set +o nounset
-if [ -z $SITE_BASE ]; then
-    SITE_BASE=$(cd "$_script_dir/."; pwd)
+if [ -z $SVN_SYNC_BASE ]; then
+    SVN_SYNC_BASE=$(cd "$_script_dir/."; pwd)
 fi
 set -o nounset
 
 # Read .passwd.rc, to get confidential variables such as username or password.
-if [ -f "${SITE_BASE}/conf.d/.passwd.rc" ]
+if [ -f "${SVN_SYNC_BASE}/conf.d/.passwd.rc" ]
 then
-    echo -e "\n*** Reading confidential variables from ${SITE_BASE}/conf.d/.passwd.rc ..."
+    echo -e "\n*** Reading confidential variables from ${SVN_SYNC_BASE}/conf.d/.passwd.rc ..."
     set +x
-    source "${SITE_BASE}/conf.d/.passwd.rc"
+    source "${SVN_SYNC_BASE}/conf.d/.passwd.rc"
 fi
 
 # Run echo config and do sync
-for CFG in `ls "${SITE_BASE}/conf.d/"`
+for CFG in `ls "${SVN_SYNC_BASE}/conf.d/"`
 do
     echo -e "\n================================================================================"
     echo "Start SVN [${CFG}] at `date "+%Y%m%d-%H%M%S"`"
     set -x
-    source "${SITE_BASE}/conf.d/${CFG}"
+    source "${SVN_SYNC_BASE}/conf.d/${CFG}"
     set +x
     echo "_REPO_DIR = ${_REPO_DIR}, _SVN_URL = ${_SVN_URL}"
     echo -e "================================================================================"
-    FULL_REPO_DIR=${SITE_BASE}/repo/${_REPO_DIR}
+    FULL_REPO_DIR=${SVN_SYNC_BASE}/repo/${_REPO_DIR}
     if [ ! -d "${FULL_REPO_DIR}" ]
     then
         echo "${_REPO_DIR} not initialized, begin to initialize ..."
