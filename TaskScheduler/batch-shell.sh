@@ -30,12 +30,12 @@ TIMESTAMP=`date "+%Y%m%d-%H%M%S"`
 CMD_LINE=$*
 PROG_NAME=$1
 CUR_DATE=$TIMESTAMP
-if [ "$1" = "/daily" ]
+if [ "$1" = "--daily" ]
 then
     CUR_DATE=`date "+%Y%m%d"`
 
-    # trim "/daily "
-    CMD_LINE=${CMD_LINE:7}
+    # trim "--daily "
+    CMD_LINE=${CMD_LINE:8}
     PROG_NAME=$2
 fi
 
