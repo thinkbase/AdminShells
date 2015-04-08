@@ -30,9 +30,9 @@ set -o nounset
 # Read .passwd.rc, to get confidential variables such as username or password.
 if [ -f "${SITE_BASE}/conf.d/.passwd.rc" ]
 then
-    set -x
-    source "${SITE_BASE}/conf.d/.passwd.rc"
+    echo -e "\n*** Reading confidential variables from ${SITE_BASE}/conf.d/.passwd.rc ..."
     set +x
+    source "${SITE_BASE}/conf.d/.passwd.rc"
 fi
 
 # Run echo config and do sync
