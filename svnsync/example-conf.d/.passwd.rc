@@ -1,0 +1,5 @@
+# The file ".passwd.rc" should be placed in conf.d folder, to keep some confidential variables such as username or password.
+# KEEP IT IN SECRET!!!
+
+_SVN_USER_JX="anonymous"
+_SVN_PWD_JX="xxx"

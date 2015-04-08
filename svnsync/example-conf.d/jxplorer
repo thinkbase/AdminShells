@@ -1,6 +1,6 @@
 _REPO_DIR="jxplorer"
 _SVN_URL="svn://svn.code.sf.net/p/jxplorer/code"
 set +x  #Prevent showing username and password
-_SVN_SYNC_U=anonymous
-_SVN_SYNC_P=
+_SVN_SYNC_U=${_SVN_USER_JX}
+_SVN_SYNC_P=${_SVN_PWD_JX}
 

@@ -27,6 +27,15 @@ if [ -z $SITE_BASE ]; then
 fi
 set -o nounset
 
+# Read .passwd.rc, to get confidential variables such as username or password.
+if [ -f "${SITE_BASE}/conf.d/.passwd.rc" ]
+then
+    set -x
+    source "${SITE_BASE}/conf.d/.passwd.rc"
+    set +x
+fi
+
+# Run echo config and do sync
 for CFG in `ls "${SITE_BASE}/conf.d/"`
 do
     echo -e "\n================================================================================"
