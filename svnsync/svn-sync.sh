@@ -54,7 +54,7 @@ do
         svnadmin create "${FULL_REPO_DIR}"
         create_revprop_change_hook "${FULL_REPO_DIR}"
         set +x
-        svnsync initialize --source-username=${_SVN_SYNC_U} --source-password=${_SVN_SYNC_P} file://${FULL_REPO_DIR} ${_SVN_URL}
+        svnsync initialize --non-interactive --source-username=${_SVN_SYNC_U} --source-password=${_SVN_SYNC_P} file://${FULL_REPO_DIR} ${_SVN_URL}
     fi
     echo "${_REPO_DIR}: begin to sync ..."
     # To prevent svnsync run twice or more
@@ -71,7 +71,7 @@ do
     svn propset svn:sync-from-url --revprop -r0 ${_SVN_URL} file:///${FULL_REPO_DIR}
     # SVN Sync
     set +x
-    svnsync sync --source-username=${_SVN_SYNC_U} --source-password=${_SVN_SYNC_P} file:///${FULL_REPO_DIR}
+    svnsync sync --non-interactive --source-username=${_SVN_SYNC_U} --source-password=${_SVN_SYNC_P} file:///${FULL_REPO_DIR}
     echo "Sync SVN [${CFG}] finished at `date "+%Y%m%d-%H%M%S"`"
     echo -e "================================================================================"
 done
