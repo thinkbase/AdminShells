@@ -1,0 +1,1 @@
+Copy *.cfg.cmd to upper folder(repo-win) then you can try.
