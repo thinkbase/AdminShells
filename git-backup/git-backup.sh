@@ -56,11 +56,6 @@ then
         git clone "${TGT_DIR}" "/tmp/git-backup-${TIMESTAMP}"
         mv -v "/tmp/git-backup-${TIMESTAMP}/.git" "${SRC_DIR}"
         rmdir "/tmp/git-backup-${TIMESTAMP}"
-        pushd "${SRC_DIR}"
-        git config user.email "backup@bokesoft.com"
-        git config user.name "backup"
-        git config push.default simple
-        popd
         set +x
     fi
 fi
@@ -72,11 +67,18 @@ then
     then
         echo "[BACKUP] ${SRC_DIR} --> ${TGT_DIR} ..."
         set -x
+        pushd "${SRC_DIR}"
+        git config user.email "backup@bokesoft.com"
+        git config user.name "backup"
+        git config push.default simple
         git add --all .
+        set +o errexit  # commit should return non-zero if nothing could commit
         git commit -m "backup `date "+%Y%m%d-%H%M%S"`"
+        set -o errexit
         git push
         git status
         git ls-files -o
+        popd
         set +x
         exit 0;
     fi
