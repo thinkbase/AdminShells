@@ -72,7 +72,6 @@ then
     then
         echo "[BACKUP] ${SRC_DIR} --> ${TGT_DIR} ..."
         set -x
-        git pull
         git add --all .
         git commit -m "backup `date "+%Y%m%d-%H%M%S"`"
         git push
