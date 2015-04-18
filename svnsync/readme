@@ -2,4 +2,5 @@ The well-designed, configurable Subversion-repository-synchronization solution.
 
 How to test?
 ========
-[linux]Copy config files in folder example-conf.d into conf.d folder, then run svn-sync.sh. 
+[Windows] Copy *.cfg.cmd in folder example-repo-win into repo-win folder, then run svn-sync.bat
+[Linux  ] Copy config files in folder example-conf.d into conf.d folder, then run svn-sync.sh. 
