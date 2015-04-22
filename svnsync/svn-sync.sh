@@ -69,8 +69,10 @@ do
     svn propdel svn:sync-lock --revprop -r0 file:///${FULL_REPO_DIR}
     # Change the source url, to change souece url automatically
     svn propset svn:sync-from-url --revprop -r0 ${_SVN_URL} file:///${FULL_REPO_DIR}
-    # SVN Sync
     set +x
+    # SVN Sync (Use set +x to hide password in command line)
+    set +x
+    echo "svnsync sync --non-interactive --source-username=*** --source-password=*** file:///${FULL_REPO_DIR} ..."
     svnsync sync --non-interactive --source-username=${_SVN_SYNC_U} --source-password=${_SVN_SYNC_P} file:///${FULL_REPO_DIR}
     echo "Sync SVN [${CFG}] finished at `date "+%Y%m%d-%H%M%S"`"
     echo -e "================================================================================"
