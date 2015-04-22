@@ -68,7 +68,7 @@ then
         echo "[BACKUP] ${SRC_DIR} --> ${TGT_DIR} ..."
         set -x
         pushd "${SRC_DIR}"
-        git config user.email "backup@bokesoft.com"
+        git config user.email "backup@backup.com"
         git config user.name "backup"
         git config push.default simple
         git add --all .
