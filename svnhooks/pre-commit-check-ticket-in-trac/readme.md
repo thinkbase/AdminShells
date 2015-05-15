@@ -8,7 +8,7 @@ Deploy(On Linux)
  2. `ln -s` `pre-commit` script file into `hook` directory;
  3. create `pre-commit.conf` in `hook` directory, as the following examples;
     - A general example:
-        ````
+    ````
 # Error messages for comment format error and ticket invalid error
 CONF_ERR_MSG_FORMAT="SVN comment format invalid, must match: '#<ticket> <comments>'"
 CONF_ERR_MSG_TICKET="Ticket number invalid, may Ticket not existed, or been fixed, closed, rejected"
