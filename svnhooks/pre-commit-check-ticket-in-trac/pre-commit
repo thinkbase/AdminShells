@@ -1,0 +1,44 @@
+#! /bin/bash
+
+if [ -z $BASH ]; then
+    echo "This shell script MUST run under bash."
+    exit -1
+fi
+_script="${BASH_SOURCE[0]}"
+_script_dir="$(dirname "$_script")"
+#echo "Directory of $_script : $_script_dir"
+
+set -o nounset
+set -o errexit
+set -x
+
+REPOS="$1"
+TXN="$2"
+
+# Following variable should be replaced in "pre-commit.conf"
+CONF_ERR_MSG_FORMAT="Commit log format not match '#<ticket> <comments>'"
+CONF_ERR_MSG_TICKET="Ticket No. invalid"
+CONF_TRAC_DB="/not-existed/trac.db"
+# Use "pre-commit.conf" to overwrite configuable variables
+source "${_script_dir}/pre-commit.conf"
+
+COMMIT_LOG=`svnlook log -t "$TXN" "$REPOS"`
+COMMIT_LOG="${COMMIT_LOG#"${COMMIT_LOG%%[![:space:]]*}"}"   # remove leading whitespace characters
+COMMIT_LOG="${COMMIT_LOG%"${COMMIT_LOG##*[![:space:]]}"}"   # remove trailing whitespace characters
+
+if [[ "$COMMIT_LOG" =~ ^\#([0-9]+)\ .* ]];  # the comment's format: #<ticket> <comments>
+then
+    TICKET_NO=${BASH_REMATCH[1]}
+    # Check ticket opened or not
+    TC=`sqlite3 -batch "${CONF_TRAC_DB}" "SELECT COUNT(*) FROM Ticket WHERE status NOT IN ('fixed', 'closed', 'rejected') AND id='${TICKET_NO}';"`
+    if [ "$TC" -eq "1" ]
+    then
+        exit 0
+    else
+        echo "${CONF_ERR_MSG_TICKET}: (#${TICKET_NO}, COUNT=${TC}) ." >&2
+        exit 1
+    fi
+else
+    echo "${CONF_ERR_MSG_FORMAT} ." >&2
+    exit 1
+fi
