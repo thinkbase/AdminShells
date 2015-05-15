@@ -10,14 +10,19 @@ Deploy(On Linux)
     - A general example:
 
         ````
-# Error messages for comment format error and ticket invalid error
-CONF_ERR_MSG_FORMAT="SVN comment format invalid, must match: '#<ticket> <comments>'"
-CONF_ERR_MSG_TICKET="Ticket number invalid, may Ticket not existed, or been fixed, closed, rejected"
 # The trac db (sqlite) to check ticket number
 CONF_TRAC_DB="/data/tracenv/project1/db/trac.db"
+# The path which could be commited without ticket
+CONF_IGONRE_PATH=".admin:trunk/docs"
+# The minimum length of comments
+CONF_COMMIT_MIN="2"
+# Error messages for comment format error and ticket invalid error
+CONF_ERR_MSG_BLANK="Commit log can't be BLANK(minimum length is ${CONF_COMMIT_MIN})"
+CONF_ERR_MSG_FORMAT="SVN comment format invalid, must match: '#<ticket> <comments>'"
+CONF_ERR_MSG_TICKET="Ticket number invalid, may Ticket not existed, or been fixed, closed, rejected"
         ````
 
-    - A Chinese example:
+    - A Chinese example (May cause encoding error in Apache+Subversion environment):
 
         ````
 # Error messages for comment format error and ticket invalid error

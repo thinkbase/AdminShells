@@ -16,12 +16,36 @@ REPOS="$1"
 TXN="$2"
 
 # Following variable should be replaced in "pre-commit.conf"
+CONF_TRAC_DB="/not-existed/trac.db"
+CONF_IGONRE_PATH=".admin:trunk/docs"
+CONF_COMMIT_MIN="2"
+CONF_ERR_MSG_BLANK="Commit log can't be BLANK(minimum length is ${CONF_COMMIT_MIN})"
 CONF_ERR_MSG_FORMAT="Commit log format not match '#<ticket> <comments>'"
 CONF_ERR_MSG_TICKET="Ticket No. invalid"
-CONF_TRAC_DB="/not-existed/trac.db"
 # Use "pre-commit.conf" to overwrite configuable variables
 source "${_script_dir}/pre-commit.conf"
 
+# Check the ignored directories
+DIR_COUNT=0
+IGNORE_DIR_COUNT=0
+mkdir -p /tmp/pre-commit-check-ticket-in-trac.TXN.dirs-changed
+_TXN_TMP=/tmp/pre-commit-check-ticket-in-trac.TXN.dirs-changed/$TXN.dirs-changed.$(date +%s%N).txt
+svnlook dirs-changed -t "$TXN" "$REPOS" > "${_TXN_TMP}"
+while read _LINE
+do
+    DIR_COUNT=$(($DIR_COUNT+1))
+    for _PATH in `echo "$CONF_IGONRE_PATH" | tr ":" "\n"`
+    do
+        if [[ "${_LINE}" == "${_PATH}/"* ]]
+        then
+            IGNORE_DIR_COUNT=$(($IGNORE_DIR_COUNT+1))
+            continue
+        fi
+    done
+done < "${_TXN_TMP}"
+rm -f "${_TXN_TMP}"
+
+# Get commit comments
 COMMIT_LOG=`svnlook log -t "$TXN" "$REPOS"`
 COMMIT_LOG="${COMMIT_LOG#"${COMMIT_LOG%%[![:space:]]*}"}"   # remove leading whitespace characters
 COMMIT_LOG="${COMMIT_LOG%"${COMMIT_LOG##*[![:space:]]}"}"   # remove trailing whitespace characters
@@ -36,9 +60,20 @@ then
         exit 0
     else
         echo "${CONF_ERR_MSG_TICKET}: (#${TICKET_NO}, COUNT=${TC}) ." >&2
-        exit 1
+        exit 101
     fi
 else
-    echo "${CONF_ERR_MSG_FORMAT} ." >&2
-    exit 1
+    if [[ $DIR_COUNT -eq $IGNORE_DIR_COUNT ]]
+    then
+        #FIXME: The unicode char(As '?\230?\181?\139?\232?\175?\149') can't get the exact length
+        if [ "${#COMMIT_LOG}" -lt "$CONF_COMMIT_MIN" ];then
+            echo "${CONF_ERR_MSG_BLANK} ." >&2
+            exit 102
+        else
+            exit 0
+        fi
+    else
+        echo "${CONF_ERR_MSG_FORMAT} ." >&2
+        exit 103
+    fi
 fi
