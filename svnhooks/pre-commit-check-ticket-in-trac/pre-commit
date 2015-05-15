@@ -10,7 +10,7 @@ _script_dir="$(dirname "$_script")"
 
 set -o nounset
 set -o errexit
-set -x
+#set -x
 
 REPOS="$1"
 TXN="$2"
