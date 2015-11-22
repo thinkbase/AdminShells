@@ -4,8 +4,8 @@ The Subversion "pre-revprop-change" hook to make client can modify the commit lo
 
 Deploy(Only for Windows)
 ----
- 1. `cd` `hook` directory of subversion repository;
- 2. Copy `pre-revprop-change.bat` and `pre-revprop-change.js` into hoot directory;
+ 1. `cd` `hooks` directory of subversion repository;
+ 2. Copy `pre-revprop-change.bat` and `pre-revprop-change.js` into hoots directory;
 
 Modification Logs
 ----
