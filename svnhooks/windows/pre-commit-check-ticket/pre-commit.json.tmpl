@@ -1,8 +1,10 @@
 {
     // Must contain "#nnn" ticket number in commit log
     LOG_PATTERN: /.*\#\d+\s.*/g,
+    
     // Only check commit log pattern when contains "Project/dev/" directory
-    PATH_PATTERN: /Project\/dev\//g,
+    PATH_PATTERN: /Project\/dev\/.*/g,
+    
     // Commit must long then 4 letters
     LOG_MIN_LEN: 4
  }

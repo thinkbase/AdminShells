@@ -107,7 +107,9 @@ var doCheck = function(){
 	var log = $log();
 	debug("commit log: " + log);
 	if (log.length < conf.LOG_MIN_LEN) {
-		errorBuf[errorBuf.length] = "The commit log must be long then ["+conf.LOG_MIN_LEN+"] letters";
+		var msg = "The commit log must be long then ["+conf.LOG_MIN_LEN+"] letters";
+		debug(msg);
+		errorBuf[errorBuf.length] = msg;
 		return errorBuf;
 	}
 	
@@ -130,7 +132,9 @@ var doCheck = function(){
 		var logMatch = pLog.test(log);
 		debug(" > log match the pattern = ["+logMatch+"]");
 		if (! logMatch){
-			errorBuf[errorBuf.length] = "Paths '"+checkPaths+"': The commit log must match the pattern ["+pLog+"]";
+			var msg = "Paths '"+checkPaths+"': The commit log must match the pattern ["+pLog+"]";
+			debug(msg);
+			errorBuf[errorBuf.length] = msg;
 			return errorBuf;
 		}		
 	}
@@ -142,6 +146,7 @@ var errors = doCheck();
 
 //Return
 if(errors.length <= 0){
+    debug("success");
     WScript.Quit(0);
 }else{
     WScript.StdErr.WriteLine(">>> pre-commit.js:");
@@ -149,5 +154,6 @@ if(errors.length <= 0){
         WScript.StdErr.WriteLine( (i+1) + ". "+errors[i] );
     }
     WScript.StdErr.WriteLine(".");
+    debug("failure");
     WScript.Quit(1);
 }
