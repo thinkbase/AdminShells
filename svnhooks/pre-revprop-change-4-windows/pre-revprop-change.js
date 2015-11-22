@@ -21,23 +21,15 @@ if (! fso.FolderExists(logDir)){
 }
 
 //Read old log
-var tmpFile = args(5);
-if (! fso.FileExists(tmpFile)){
-	WScript.Quit(-1);
-}
-var ForReading= 1;
-var fTmp = fso.OpenTextFile(tmpFile, ForReading, false);
-var oldLog = fTmp.ReadAll() + "";
-fTmp.Close();
-fso.DeleteFile(tmpFile, true);
+var oldLog = WScript.StdIn.ReadAll();
 if (!oldLog) oldLog="";
 oldLog = oldLog.replace(/^[\s]+/,'').replace(/[\s]+$/,''); //Trim
 
 //Write log
 var ForAppending= 8;
 var ts = fso.OpenTextFile(logDir+"\\["+revision+"].log", ForAppending, true);
-ts.WriteLine("==== Start revprop-change ====");
 ts.WriteLine(strTs);
+ts.WriteLine("==== Start revprop-change ====");
 ts.WriteLine("pass = " + pass);
 ts.WriteLine("-------- Original log --------");
 ts.WriteLine(oldLog);
