@@ -16,7 +16,7 @@ REPOS="$1"
 TXN="$2"
 
 # Following variable should be replaced in "pre-commit.conf"
-CONF_TRAC_DB="/not-existed/trac.db"
+CONF_TRAC_DB="/not-existed/trac.db:/not-existed-2/trac.db"
 CONF_IGONRE_PATH=".admin:trunk/docs"
 CONF_COMMIT_MIN="2"
 CONF_ERR_MSG_BLANK="Commit log can't be BLANK(minimum length is ${CONF_COMMIT_MIN})"
@@ -54,14 +54,19 @@ if [[ "$COMMIT_LOG" =~ ^\#([0-9]+)\ .* ]];  # the comment's format: #<ticket> <c
 then
     TICKET_NO=${BASH_REMATCH[1]}
     # Check ticket opened or not
-    TC=`sqlite3 -batch "${CONF_TRAC_DB}" "SELECT COUNT(*) FROM Ticket WHERE status NOT IN ('fixed', 'closed', 'rejected') AND id='${TICKET_NO}';"`
-    if [ "$TC" -eq "1" ]
-    then
-        exit 0
-    else
-        echo "${CONF_ERR_MSG_TICKET}: (#${TICKET_NO}, COUNT=${TC}) ." >&2
-        exit 101
-    fi
+    for _DB in `echo "${CONF_TRAC_DB}" | tr ":" "\n"`
+    do
+        TC=`sqlite3 -batch "${_DB}" "SELECT COUNT(*) FROM Ticket WHERE status NOT IN ('fixed', 'closed', 'rejected') AND id='${TICKET_NO}';
+"`
+        if [ "$TC" -eq "1" ]
+        then
+            # Ticket found, return without error
+            exit 0
+        fi
+    done
+    #Return with error
+    echo "${CONF_ERR_MSG_TICKET}: (#${TICKET_NO}) ." >&2
+    exit 101
 else
     if [[ $DIR_COUNT -eq $IGNORE_DIR_COUNT ]]
     then
