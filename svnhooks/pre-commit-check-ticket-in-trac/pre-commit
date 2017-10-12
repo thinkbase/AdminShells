@@ -56,8 +56,7 @@ then
     # Check ticket opened or not
     for _DB in `echo "${CONF_TRAC_DB}" | tr ":" "\n"`
     do
-        TC=`sqlite3 -batch "${_DB}" "SELECT COUNT(*) FROM Ticket WHERE status NOT IN ('fixed', 'closed', 'rejected') AND id='${TICKET_NO}';
-"`
+        TC=`sqlite3 -batch "${_DB}" "SELECT COUNT(*) FROM Ticket WHERE status NOT IN ('fixed', 'closed', 'rejected') AND id='${TICKET_NO}';"`
         if [ "$TC" -eq "1" ]
         then
             # Ticket found, return without error
