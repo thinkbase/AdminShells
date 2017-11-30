@@ -8,6 +8,7 @@ set PATH=%SITE_BASE%\..\.bin\svn-win32-1.6.15\bin;%PATH%
 set LANG=en_US.UTF-8
 set LC_CTYPE=en_US.UTF-8
 
+
 pushd "%SITE_BASE%\repo-win"
 for %%i in (*.cfg.cmd) do (
     echo.
@@ -27,7 +28,7 @@ for %%i in (*.cfg.cmd) do (
         pushd "!_REPO_DIR!"
         svnadmin create .
         echo ::It's blank > ./hooks/pre-revprop-change.bat
-        svnsync initialize --source-username=!_SVN_SYNC_U! --source-password=!_SVN_SYNC_P! file:///!_REPO_URL! !_SVN_URL!
+        svnsync initialize --non-interactive --source-username=!_SVN_SYNC_U! --source-password=!_SVN_SYNC_P! file:///!_REPO_URL! !_SVN_URL!
         popd
     )
     echo !_REPO_URL!: begin to sync ...
@@ -38,9 +39,10 @@ for %%i in (*.cfg.cmd) do (
     REM 修改 SVN 同步的来源 URL, 以自动支持来源 URL 改变的情况
     svn propset svn:sync-from-url --revprop -r0 !_SVN_URL! file:///!_REPO_URL!
     REM 执行 SVN 库同步
-    svnsync sync --source-username=!_SVN_SYNC_U! --source-password=!_SVN_SYNC_P! file:///!_REPO_URL!
+    svnsync sync --non-interactive --source-username=!_SVN_SYNC_U! --source-password=!_SVN_SYNC_P! file:///!_REPO_URL!
     echo Finish: !date! !time! *******
 )
 popd
+
 
 ENDLOCAL
